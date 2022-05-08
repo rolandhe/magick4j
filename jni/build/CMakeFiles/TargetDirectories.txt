@@ -1,0 +1,3 @@
+/Users/hexiufeng/github/magick4j/jni/build/CMakeFiles/Magick4J.dir
+/Users/hexiufeng/github/magick4j/jni/build/CMakeFiles/edit_cache.dir
+/Users/hexiufeng/github/magick4j/jni/build/CMakeFiles/rebuild_cache.dir
