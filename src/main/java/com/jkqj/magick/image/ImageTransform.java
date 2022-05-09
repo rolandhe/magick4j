@@ -44,6 +44,16 @@ public class ImageTransform extends BaseMagick {
     }
 
 
+    /**
+     * 裁剪图片
+     *
+     * @param src
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @return
+     */
     public static Image cropImage(Image src,long x,long y, int width, int height){
         long handler = cropImage(src.getHandler(),x,y,width,height);
         return Image.factory(handler);

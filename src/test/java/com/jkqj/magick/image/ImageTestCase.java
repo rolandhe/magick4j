@@ -139,4 +139,18 @@ public class ImageTestCase {
         image.destroy();
 
     }
+
+    @Test
+    public void cropImageTest(){
+        Image image = Image.factory("/Users/hexiufeng/data/gif/1-2-free-png-image.png");
+
+        int w = image.getColumns();
+        int h = image.getRows();
+
+        Image to = ImageTransform.cropImage(image,0,0,w/2,h);
+
+        to.writeImage("/Users/hexiufeng/data/gif/1-2-free-png-image-l.png");
+        to.destroy();
+        image.destroy();
+    }
 }
