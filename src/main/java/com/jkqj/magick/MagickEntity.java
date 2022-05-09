@@ -3,6 +3,7 @@ package com.jkqj.magick;
 /**
  * ImageMagick实体抽象,支持4中操作
  *
+ * @author hexiufeng
  */
 public interface MagickEntity {
     /**
