@@ -12,7 +12,7 @@ public class ImageTransform extends BaseMagick {
     /**
      *
      * @param imageHandler
-     * @param orientation  OrientationType
+     * @param orientation  {@link OrientationType}
      * @return
      */
     private static native  long autoOrientImage(long imageHandler, int orientation);

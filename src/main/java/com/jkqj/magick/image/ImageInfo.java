@@ -21,7 +21,7 @@ public class ImageInfo extends BaseMagick implements MagickEntity {
 
     /**
      * @param handler
-     * @param compression CompressType
+     * @param compression {@link CompressType}
      */
     private static native void compression(long handler, int compression);
 
@@ -84,6 +84,10 @@ public class ImageInfo extends BaseMagick implements MagickEntity {
         quality(handler, quality);
     }
 
+    /**
+     *
+     * @param compression {@link CompressType}
+     */
     public void setCompression(int compression) {
         if (handler == 0) {
             return;

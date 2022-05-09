@@ -46,13 +46,13 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
 
     /**
      * @param handler
-     * @param gravityType GravityType
+     * @param gravityType {@link GravityType}
      */
     private static native void setGravity(long handler, int gravityType);
 
     /**
      * @param handler
-     * @param align   AlignType
+     * @param align   {@link AlignType}
      */
     private static native void setAlign(long handler, int align);
 
@@ -196,6 +196,10 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         annotation(handler, x, y, text);
     }
 
+    /**
+     *
+     * @param gravity {@link GravityType}
+     */
     public void setGravity(int gravity) {
         if (handler == 0) {
             return;
@@ -203,6 +207,10 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setGravity(handler, gravity);
     }
 
+    /**
+     *
+     * @param align {@link AlignType}
+     */
     public void setAlign(int align) {
         if (handler == 0) {
             return;

@@ -21,7 +21,7 @@ public class Image extends BaseMagick implements MagickEntity {
 
     /**
      * @param imageHandler
-     * @param pixelMask        PixelMask
+     * @param pixelMask        {@link PixelMask}
      * @param maskImageHandler
      * @return
      */
@@ -29,7 +29,7 @@ public class Image extends BaseMagick implements MagickEntity {
 
     /**
      * @param imageHandler
-     * @param pixelMask    PixelMask
+     * @param pixelMask    {@link PixelMask}
      * @return
      */
     private static native long getImageMask(long imageHandler, int pixelMask);
@@ -165,7 +165,7 @@ public class Image extends BaseMagick implements MagickEntity {
 
     /**
      * @param handler
-     * @param method  PixelInterpolateMethod
+     * @param method  {@link PixelInterpolateMethod}
      * @param radius
      * @return
      */
@@ -288,6 +288,15 @@ public class Image extends BaseMagick implements MagickEntity {
         return writeImage(handler, toFile);
     }
 
+    /**
+     *
+     * @param srcImage
+     * @param compositeOp {@link CompositeOperator}
+     * @param clipToSelf
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean compositeImage(Image srcImage, int compositeOp, boolean clipToSelf, long x, long y) {
         if (handler == 0 || srcImage == null || srcImage.getHandler() == 0) {
             return false;
@@ -295,6 +304,14 @@ public class Image extends BaseMagick implements MagickEntity {
         return compositeImage(handler, srcImage.getHandler(), compositeOp, clipToSelf, x, y);
     }
 
+    /**
+     *
+     * @param srcImage
+     * @param compositeOp {@link CompositeOperator}
+     * @param x
+     * @param y
+     * @return
+     */
     public boolean compositeImage(Image srcImage, int compositeOp, long x, long y) {
         return compositeImage(srcImage, compositeOp, true, x, y);
     }
@@ -553,6 +570,11 @@ public class Image extends BaseMagick implements MagickEntity {
     }
 
 
+    /**
+     *
+     * @param pixelMask {@link PixelMask}
+     * @param maskImage
+     */
     public void setImageMask(int pixelMask, Image maskImage) {
         if (handler == 0) {
             return;
@@ -560,6 +582,11 @@ public class Image extends BaseMagick implements MagickEntity {
         setImageMask(handler, pixelMask, maskImage.getHandler());
     }
 
+    /**
+     *
+     * @param pixelMask {@link PixelMask}
+     * @return
+     */
     public Image getImageMask(int pixelMask) {
         if (handler == 0) {
             return null;
