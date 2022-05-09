@@ -22,7 +22,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_autoOrientImag
     Image * newImage = AutoOrientImage(image,orientation,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_autoOrientImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -57,7 +57,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_chopImage
     Image * newImage = ChopImage(image,&chopInfo,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_chopImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -92,7 +92,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_cropImage
     Image * newImage = CropImage(image,&cropInfo,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_cropImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -120,7 +120,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_flipImage
     Image * newImage = FlipImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_flipImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -148,7 +148,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_flopImage
     Image * newImage = FlopImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_flopImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -176,7 +176,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_transposeImage
     Image * newImage = TransposeImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_transposeImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -204,7 +204,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_transverseImag
     Image * newImage = TransverseImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_transverseImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -232,7 +232,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageTransform_trimImage
     Image * newImage = TrimImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_ImageTransform_trimImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }

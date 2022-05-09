@@ -4,4 +4,5 @@ import com.jkqj.magick.BaseMagick;
 
 public class GifSupport extends BaseMagick {
     public static native boolean scale(String fromGifFile, String toGifFile, int columns, int rows);
+    public static native boolean thumbnail(String fromGifFile, String toGifFile, int columns, int rows);
 }

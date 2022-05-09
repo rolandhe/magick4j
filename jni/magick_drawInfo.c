@@ -143,7 +143,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
 
     char * maxText = newCharBuff(20 * 4096);
 
-    sprintf(maxText,"text %.20g %.20g '%s'\n", x,y, escapedText);
+    sprintf(maxText,"text %.20g %.20g '%s'", x,y, escapedText);
     DestroyString(escapedText);
 
     if(drawInfo->primitive != NULL)
@@ -179,7 +179,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setFill
 
     if(!QueryColorCompliance(color,AllCompliance,&(drawInfo->fill),exception))
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_draw_DrawInfo_setFill",exception);
         DestroyExceptionInfo(exception);
         return;
     }    
@@ -208,7 +208,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setStroke
     exception = AcquireExceptionInfo();
     if(!QueryColorCompliance(color,AllCompliance,&(drawInfo->stroke),exception))
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_draw_DrawInfo_setStroke",exception);
         DestroyExceptionInfo(exception);
         return;
     }    

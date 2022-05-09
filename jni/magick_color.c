@@ -15,7 +15,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_jkqj_magick_draw_Color_getColorInfo
     ColorInfo * colorInfo = GetColorInfo(name,exception);
     if(colorInfo == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_draw_Color_getColorInfo",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }

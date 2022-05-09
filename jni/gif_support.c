@@ -1,35 +1,35 @@
 #include "headers/gif_support.h"
 
- 
 
-MagickBooleanType scaleCore(const char * srcFileName, const char * toFileName, size_t rows, size_t columns)
+
+MagickBooleanType scaleCore(JNIEnv * env, const char * srcFileName, const char * toFileName, size_t rows, size_t columns, ImageResizeOp op)
 {
-    Image * srcImage = readGifFile(srcFileName);
+    Image * srcImage = readGifFile(env,srcFileName);
     if(srcImage == NULL)
     {
         return MagickFalse;
     }
 
-    Image * coalImage = coalesceImages(srcImage);
+    Image * coalImage = coalesceImages(env,srcImage);
     DestroyImageList(srcImage);
     if(coalImage == NULL)
     {
         return MagickFalse;
     }
 
-    Image * gifImage = scaleGif(coalImage,rows,columns);
+    Image * gifImage = scaleGif(env,coalImage,rows,columns,op);
     DestroyImageList(coalImage);
     if(gifImage == NULL)
     {
         return MagickFalse;
     }
 
-   MagickBooleanType ret =  store2File(gifImage,toFileName);
+   MagickBooleanType ret =  store2File(env,gifImage,toFileName);
    DestroyImageList(gifImage);
    return ret;
 }
 
-Image * readGifFile(const char * filename)
+Image * readGifFile(JNIEnv * env,const char * filename)
 {
     ImageInfo * imageInfo = AcquireMagickMemory(sizeof(ImageInfo));
     if(imageInfo == NULL){
@@ -42,7 +42,7 @@ Image * readGifFile(const char * filename)
     exception = AcquireExceptionInfo();
     Image * image = ReadImage(imageInfo, exception);
     if(image == NULL){
-        logException(exception);
+        logException(env,"gif_support.scaleCore.readGifFile",exception);
         DestroyExceptionInfo(exception);
         DestroyImageInfo(imageInfo);
         return NULL;
@@ -53,7 +53,7 @@ Image * readGifFile(const char * filename)
     return GetFirstImageInList(image);
 }
 
-Image* coalesceImages(const Image * srcImage)
+Image* coalesceImages(JNIEnv * env,const Image * srcImage)
 {
     if(srcImage == NULL)
     {
@@ -64,7 +64,7 @@ Image* coalesceImages(const Image * srcImage)
     Image* image = CoalesceImages(srcImage , exception);
     if(image == NULL)
     {
-        logException(exception);
+        logException(env,"gif_support.scaleCore.coalesceImages",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -73,7 +73,7 @@ Image* coalesceImages(const Image * srcImage)
     return image;
 }
 
-Image * scaleGif(const Image* srcImage, const size_t rows, const size_t columns)
+Image * scaleGif(JNIEnv * env,const Image* srcImage, const size_t rows, const size_t columns, ImageResizeOp op)
 {
     Image* scaleGifImage;
     // Image * p;
@@ -81,10 +81,10 @@ Image * scaleGif(const Image* srcImage, const size_t rows, const size_t columns)
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
-    Image* scaleImage = ScaleImage(first, columns,rows,exception);
+    Image* scaleImage = op(first, columns,rows,exception);
     if(scaleImage == NULL)
     {
-        logException(exception);
+        logException(env,"gif_support.scaleCore.scaleGif",exception);
         DestroyExceptionInfo(exception);
 
         return NULL;
@@ -93,7 +93,7 @@ Image * scaleGif(const Image* srcImage, const size_t rows, const size_t columns)
     DestroyExceptionInfo(exception);
     
     scaleGifImage=NewImageList();
-//    fprintf(stdout,"%s \n.", "before add to iamge list");
+
     AppendImageToList(&scaleGifImage,scaleImage);
 
 
@@ -102,10 +102,10 @@ Image * scaleGif(const Image* srcImage, const size_t rows, const size_t columns)
     while(next != NULL)
     {
         exception = AcquireExceptionInfo();
-        scaleImage = ScaleImage(next,columns,rows,exception);
+        scaleImage = op(next,columns,rows,exception);
         if(scaleImage == NULL)
         {
-            logException(exception);
+            logException(env,"gif_support.scaleCore.scaleGif.loop",exception);
             DestroyExceptionInfo(exception);
             DestroyImageList(scaleGifImage);
             return NULL;
@@ -120,17 +120,19 @@ Image * scaleGif(const Image* srcImage, const size_t rows, const size_t columns)
 }
 
 
-MagickBooleanType store2File(Image * gifImage,const char * toFile)
+MagickBooleanType store2File(JNIEnv * env,Image * gifImage,const char * toFile)
 {
     MagickBooleanType retVal;
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
     retVal = StripImage(gifImage, exception);
+    char messageBuff[MaxTextExtent];
     if(retVal == MagickFalse)
     {
-        logException(exception);
-        fprintf(stdout,"Occur error when StripImage in store gif,but continue, toFile: %s \n.", toFile);
+        logException(env,"gif_support.scaleCore.store2File.strip",exception);
+        sprintf(messageBuff,"Occur error when StripImage in store gif,but continue, toFile: %s.", toFile);
+        logInfo(env,"gif_support.scaleCore.store2File.strip", messageBuff);
     }
     DestroyExceptionInfo(exception);
 
@@ -147,8 +149,9 @@ MagickBooleanType store2File(Image * gifImage,const char * toFile)
 
     if(retVal == MagickFalse)
     {
-        logException(exception);
-        fprintf(stdout,"Occur error when StripImage in store gif,but continue, toFile: %s \n.", toFile);
+        logException(env,"gif_support.scaleCore.store2File.write",exception);
+        sprintf(messageBuff,"Occur error when StripImage in store gif,but continue, toFile: %s.", toFile);
+        logInfo(env,"gif_support.scaleCore.store2File.write", messageBuff);
     }
     DestroyExceptionInfo(exception);
     DestroyImageInfo(imageInfo);

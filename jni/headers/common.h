@@ -11,8 +11,8 @@
 #ifndef _COMMON_H_
 #define _COMMON_H_
 
-
-void logException(ExceptionInfo *exception);
+void logInfo(JNIEnv * env,const char * src, const char * message);
+void logException(JNIEnv * env, const char * src,ExceptionInfo *exception);
 
 void acceptJString(JNIEnv * env, jstring value, char * buff, size_t maxLen);
 

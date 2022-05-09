@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.7)
 
 project (Magick4J)
 
+add_compile_definitions(_USING_TRACE_MODE_)
+
 aux_source_directory(. DIR_SRCS)
 
 find_package(ImageMagick COMPONENTS MagickCore)

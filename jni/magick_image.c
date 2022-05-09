@@ -22,7 +22,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_init
 
     if(image == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_init",exception);
     }
     
 
@@ -65,7 +65,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_strip
     MagickBooleanType ret = StripImage(image, exception);
     if(MagickFalse == ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_strip",exception);
     }
         
 
@@ -96,7 +96,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_setImageMask
     MagickBooleanType ret = SetImageMask(image, pixelMask, mask,exception);
     if(MagickFalse == ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setImageMask",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -131,7 +131,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_getImageMask
     mask = GetImageMask(image, pixelMask, exception);
     if(mask == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_getImageMask",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -164,7 +164,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_setImageExtent
     MagickBooleanType ret = SetImageExtent(image,columns,rows,exception);
     if(MagickFalse == ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setImageExtent",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -196,7 +196,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_setImageAlpha
     MagickBooleanType ret = SetImageAlpha(image,alpha,exception);
     if(MagickFalse == ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setImageAlpha",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -254,7 +254,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_separateImage
 
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_separateImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -291,7 +291,7 @@ JNIEXPORT jstring JNICALL Java_com_jkqj_magick_image_Image_getImageProperty
     const char * prop = GetImageProperty(image,key,exception);
     if(prop == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_getImageProperty",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -358,7 +358,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_setImageProperty
     MagickBooleanType ret = SetImageProperty(image,key,value,exception);
     if(ret == MagickFalse)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setImageProperty",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -418,7 +418,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_readImage
 
     if(image == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_readImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -445,7 +445,13 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_writeImage
 
     imageInfo = CloneImageInfo(NULL);
 
+    
+
     acceptJString(env,toFile,image->filename,MagickPathExtent - 1);
+
+#ifdef _USING_TRACE_MODE_
+    logInfo(env,"Java_com_jkqj_magick_image_Image_writeImage", image->filename);
+#endif
 
 
     ExceptionInfo *exception;
@@ -454,7 +460,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_writeImage
     DestroyImageInfo(imageInfo);
     if(ret == MagickFalse)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_writeImage",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -484,7 +490,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_pingImage
     Image *image = PingImage(imageInfo, exception);
     if(image == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_pingImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -515,7 +521,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_compositeImage
 
     if(!ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_compositeImage",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -545,7 +551,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_textureImage
     MagickBooleanType ret =  TextureImage(image, srcImage,exception);
     if(!ret)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_textureImage",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -575,7 +581,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_rotateImage
     Image * newImage = RotateImage(image, degrees,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_rotateImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -604,7 +610,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_scaleImage
     Image * newImage = ScaleImage(image,columns,rows,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_scaleImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -749,7 +755,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_thumbnailImage
     Image * newImage = ThumbnailImage(image,columns,rows,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_thumbnailImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -823,7 +829,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_annotateImage
     MagickBooleanType ret  = AnnotateImage(image,drawInfo,exception);
     if(ret == MagickFalse)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_annotateImage",exception);
         DestroyExceptionInfo(exception);
         return JNI_FALSE;
     }
@@ -855,7 +861,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setBackgroundColorString
     exception = AcquireExceptionInfo();
     if(!QueryColorCompliance(color,AllCompliance,&(image->background_color),exception))
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setBackgroundColorString",exception);
         DestroyExceptionInfo(exception);
         return;
     }    
@@ -884,7 +890,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setBorderColorString
     exception = AcquireExceptionInfo();
     if(!QueryColorCompliance(color,AllCompliance,&(image->border_color),exception))
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_setBorderColorString",exception);
         DestroyExceptionInfo(exception);
         return;
     }    
@@ -909,12 +915,15 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_drawImage
         return;
     }
 
+#ifdef _USING_TRACE_MODE_
+    logInfo(env,"Java_com_jkqj_magick_image_Image_drawImage.primitive", drawInfo->primitive);
+#endif
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
     MagickBooleanType ret =  DrawImage(image,drawInfo,exception);
     if(ret == MagickFalse)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_drawImage",exception);
         DestroyExceptionInfo(exception);
         return;
     }    
@@ -983,7 +992,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_jkqj_magick_image_Image_getTypeMetrics
     exception = AcquireExceptionInfo();
     MagickBooleanType ret =  GetTypeMetrics(image,drawInfo,&metric,exception);
     if(!ret){
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_getTypeMetrics",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1019,7 +1028,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_shearImage
     Image * newImage = ShearImage(image,x,y,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_shearImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1047,7 +1056,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_integralRotateImage
     Image * newImage = IntegralRotateImage(image,rotations,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_integralRotateImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1075,7 +1084,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_shearRotateImage
     Image * newImage = ShearRotateImage(image,degrees,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_shearRotateImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1103,7 +1112,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_deskewImage
     Image * newImage = DeskewImage(image,threshold,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_deskewImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1131,7 +1140,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_adaptiveResizeImage
     Image * newImage = AdaptiveResizeImage(image,columns, rows,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_adaptiveResizeImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1159,7 +1168,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_autoOrientImage
     Image * newImage = AutoOrientImage(image,orientation,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_autoOrientImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1187,7 +1196,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_blurImage
     Image * newImage = BlurImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_blurImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1215,7 +1224,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_adaptiveBlurImage
     Image * newImage = AdaptiveBlurImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_adaptiveBlurImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1243,7 +1252,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_adaptiveSharpenImage
     Image * newImage = AdaptiveSharpenImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_adaptiveSharpenImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1270,7 +1279,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_embossImage
     Image * newImage = EmbossImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_embossImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1297,7 +1306,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_gaussianBlurImage
     Image * newImage = GaussianBlurImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_gaussianBlurImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1325,7 +1334,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_kuwaharaImage
     Image * newImage = KuwaharaImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_kuwaharaImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1353,7 +1362,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_sharpenImage
     Image * newImage = SharpenImage(image,radius,sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_sharpenImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1381,7 +1390,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_spreadImage
     Image * newImage = SpreadImage(image,method,radius,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_spreadImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1409,7 +1418,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_bilateralBlurImage
     Image * newImage = BilateralBlurImage(image,w,h,intensity_sigma,spatial_sigma,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_bilateralBlurImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1437,7 +1446,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_despeckleImage
     Image * newImage = DespeckleImage(image,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_despeckleImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }
@@ -1465,7 +1474,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_edgeImage
     Image * newImage = EdgeImage(image,radius,exception);
     if(newImage == NULL)
     {
-        logException(exception);
+        logException(env,"Java_com_jkqj_magick_image_Image_edgeImage",exception);
         DestroyExceptionInfo(exception);
         return NULL;
     }

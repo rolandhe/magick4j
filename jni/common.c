@@ -1,9 +1,56 @@
 #include "headers/common.h"
 
 
-void logException(ExceptionInfo *exception)
+void logInfo(JNIEnv * env,const char * src, const char * message)
 {
-    fprintf(stdout,"%s,reason is: %s\n",exception->description,exception->reason);
+    jclass logClazz = (*env)->FindClass(env,"com/jkqj/magick/log/MagickLog");
+    if(logClazz == NULL)
+    {
+        return;
+    }
+
+    jmethodID methodId =  (*env)->GetStaticMethodID(env,logClazz,"logMagickInfo","(Ljava/lang/String;Ljava/lang/String;)V");
+    if(methodId == NULL)
+    {
+        (*env)->DeleteLocalRef(env, logClazz);
+        return;
+    }
+    jstring msg = message == NULL? NULL : (*env)->NewStringUTF(env, message);
+    jstring from = (*env)->NewStringUTF(env, src);
+    (*env)->CallStaticVoidMethod(env, logClazz,methodId,msg,from);
+    (*env)->DeleteLocalRef(env, logClazz);
+    if(msg != NULL)
+    {
+        (*env)->DeleteLocalRef(env, msg);
+    }
+    
+    (*env)->DeleteLocalRef(env, from);
+}
+
+void logException(JNIEnv * env, const char * src,ExceptionInfo *exception)
+{
+    jclass logClazz = (*env)->FindClass(env,"com/jkqj/magick/log/MagickLog");
+
+    jmethodID methodId =  (*env)->GetStaticMethodID(env,logClazz,"logMagickException","(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
+    if(methodId == NULL)
+    {
+        (*env)->DeleteLocalRef(env, logClazz);
+        return;
+    }
+    jstring reason = exception->reason == NULL? NULL : (*env)->NewStringUTF(env, exception->reason);
+    jstring desc = exception->description == NULL? NULL : (*env)->NewStringUTF(env, exception->description);
+    jstring from = (*env)->NewStringUTF(env, src);
+    (*env)->CallStaticVoidMethod(env, logClazz,methodId,exception->error_number, reason,desc,from);
+    (*env)->DeleteLocalRef(env, logClazz);
+    if(reason != NULL)
+    {
+        (*env)->DeleteLocalRef(env, reason);
+    }
+    if(desc != NULL)
+    {
+        (*env)->DeleteLocalRef(env, desc);
+    }
+    (*env)->DeleteLocalRef(env, from);
 }
 
 void acceptJString(JNIEnv * env, jstring value, char * buff, size_t maxLen)

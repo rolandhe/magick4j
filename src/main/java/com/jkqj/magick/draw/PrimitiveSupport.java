@@ -18,14 +18,14 @@ public class PrimitiveSupport {
     }
 
     public static String textPrimitive(double x, double y, String text) {
-        String format = "text %.20g %.20g '%s'\n";
+        String format = "text %.20g %.20g '%s'";
 
         return String.format(format, x, y, escapeString(text));
     }
 
     public static String textRotatePrimitive(int rotate, int x, int y, String text) {
 //        String format = "rotate %.20g text %.20g %.20g '%s'\n";
-        String format = "rotate %d text %d %d '%s'\n";
+        String format = "rotate %d text %d %d '%s'";
 
         return String.format(format, rotate, x, y, escapeString(text));
     }

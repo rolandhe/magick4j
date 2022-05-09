@@ -16,6 +16,15 @@ extern "C" {
 JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_GifSupport_scale
   (JNIEnv *, jclass, jstring, jstring, jint, jint);
 
+
+/*
+ * Class:     com_jkqj_magick_support_GifSupport
+ * Method:    thumbnail
+ * Signature: (Ljava/lang/String;Ljava/lang/String;II)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_GifSupport_thumbnail
+  (JNIEnv *, jclass, jstring, jstring, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif
