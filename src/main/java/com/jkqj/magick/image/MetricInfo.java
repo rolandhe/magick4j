@@ -1,5 +1,10 @@
 package com.jkqj.magick.image;
 
+/**
+ * 绘制文本时，其所占用的空间信息描述
+ *
+ * @author hexiufeng
+ */
 public class MetricInfo {
     private double ascent;
     private double descent;

@@ -2,6 +2,12 @@ package com.jkqj.magick.image;
 
 import com.jkqj.magick.BaseMagick;
 
+/**
+ * 图片转换工具
+ *
+ * @author hexiufeng
+ *
+ */
 public class ImageTransform extends BaseMagick {
     /**
      *

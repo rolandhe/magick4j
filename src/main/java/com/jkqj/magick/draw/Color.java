@@ -7,6 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
+/**
+ * 描述颜色
+ *
+ * @author hexiufeng
+ *
+ */
 public class Color extends BaseMagick {
     private int r;
     private int g;
@@ -16,6 +22,12 @@ public class Color extends BaseMagick {
 
     private static native double[] getColorInfo(String colorName);
 
+    /**
+     * 根据颜色名称获取颜色对象，颜色名称是ImageMagick内置的，see {@link ColorDict}
+     *
+     * @param colorName
+     * @return
+     */
     public static Color getColor(String colorName) {
         double[] infos = getColorInfo(colorName);
         if (infos == null) {
@@ -32,6 +44,12 @@ public class Color extends BaseMagick {
         return color;
     }
 
+    /**
+     * 解析 #hex 格式颜色
+     *
+     * @param colorStr
+     * @return
+     */
     public static Color fromHexString(String colorStr) {
         if (!colorStr.startsWith("#") || colorStr.length() != 7) {
             throw new RuntimeException("invalid format");

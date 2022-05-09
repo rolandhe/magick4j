@@ -3,11 +3,26 @@ package com.jkqj.magick.draw;
 import com.jkqj.magick.BaseMagick;
 import com.jkqj.magick.MagickEntity;
 
+/**
+ * 封装ImageMagick DrawInfo结构，用于控制在图片上绘制
+ *
+ * @author hexiufeng
+ *
+ */
 public class DrawInfo extends BaseMagick implements MagickEntity {
     private long handler;
 
+    /**
+     * 初始化底层指针
+     *
+     * @return
+     */
     private static native long init();
 
+    /**
+     * 销毁底层指针s
+     * @param handler
+     */
     private static native void destroy(long handler);
 
     private static native void setFont(long handler, String fontName);
@@ -16,7 +31,7 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
 
     private static native void setMetrics(long handler, String metrics);
 
-    private static native void setFamily(long handler, String family);
+    private static native void setFontFamily(long handler, String family);
 
 
     private static native void setPointSize(long handler, double pointSize);
@@ -110,13 +125,17 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setPointSize(handler, size);
     }
 
-    public void setFamily(String family) {
+    public void setFontFamily(String family) {
         if (handler == 0) {
             return;
         }
-        setFamily(handler, family);
+        setFontFamily(handler, family);
     }
 
+    /**
+     * 字体颜色设置
+     * @param color
+     */
     public void setFillColor(String color) {
         if (handler == 0) {
             return;
@@ -131,12 +150,18 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setStroke(handler, color);
     }
 
+    /**
+     * 需要绘制的文本
+     *
+     * @param text
+     */
     public void setText(String text) {
         if (handler == 0) {
             return;
         }
         setText(handler, text);
     }
+
 
     public void setMetrics(String metrics) {
         if (handler == 0) {
@@ -145,6 +170,11 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setMetrics(handler, metrics);
     }
 
+    /**
+     * 设置绘制原语
+     *
+     * @param primitive
+     */
     public void setPrimitive(String primitive) {
         if (handler == 0) {
             return;
@@ -152,6 +182,13 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setPrimitive(handler, primitive);
     }
 
+    /**
+     * 设置annotation原语，底层会对文本进行转义
+     *
+     * @param x
+     * @param y
+     * @param text
+     */
     public void setAnnotationPrimitive(double x, double y, String text) {
         if (handler == 0) {
             return;
@@ -181,6 +218,12 @@ public class DrawInfo extends BaseMagick implements MagickEntity {
         setStrokeWidth(handler, w);
     }
 
+    /**
+     * 设置绘制坐标
+     *
+     * @param x
+     * @param y
+     */
     public void setGeometry(double x, double y) {
         setGeometry(handler, x, y);
     }

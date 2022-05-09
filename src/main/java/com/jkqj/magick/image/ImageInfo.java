@@ -3,10 +3,16 @@ package com.jkqj.magick.image;
 import com.jkqj.magick.BaseMagick;
 import com.jkqj.magick.MagickEntity;
 
+/**
+ * 图片元数据信息
+ *
+ * @author hexiufeng
+ *
+ */
 public class ImageInfo extends BaseMagick implements MagickEntity {
     private long handler;
 
-    private static native long initHandler();
+    private static native long init();
 
     private static native void destroyHandler(long handler);
 
@@ -24,13 +30,12 @@ public class ImageInfo extends BaseMagick implements MagickEntity {
     private static native void setFileName(long handler, String fileName);
 
     private ImageInfo() {
-        this.handler = initHandler();
     }
 
     public static ImageInfo factory() {
         ImageInfo imageInfo = new ImageInfo();
 
-        imageInfo.handler = initHandler();
+        imageInfo.handler = init();
 
         return imageInfo;
     }

@@ -1148,33 +1148,6 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_adaptiveResizeImage
     return newImage;
 }
 
-/*
- * Class:     com_jkqj_magick_image_Image
- * Method:    autoOrientImage
- * Signature: (JI)J
- */
-JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_autoOrientImage
-  (JNIEnv *env, jclass jclazz, jlong handler, jint orientation)
-{
-    Image * image;
-    image = (Image*)handler;
-
-    if(image == NULL)
-    {
-        return NULL;
-    }
-    ExceptionInfo *exception;
-    exception = AcquireExceptionInfo();
-    Image * newImage = AutoOrientImage(image,orientation,exception);
-    if(newImage == NULL)
-    {
-        logException(env,"Java_com_jkqj_magick_image_Image_autoOrientImage",exception);
-        DestroyExceptionInfo(exception);
-        return NULL;
-    }
-    DestroyExceptionInfo(exception);
-    return newImage;
-}
 
 /*
  * Class:     com_jkqj_magick_image_Image

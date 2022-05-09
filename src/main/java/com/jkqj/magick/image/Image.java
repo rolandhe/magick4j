@@ -4,6 +4,12 @@ import com.jkqj.magick.BaseMagick;
 import com.jkqj.magick.MagickEntity;
 import com.jkqj.magick.draw.DrawInfo;
 
+/**
+ * 图片核心处理类
+ *
+ * @author hexiufeng
+ *
+ */
 public class Image extends BaseMagick implements MagickEntity {
     private long handler;
 
@@ -142,12 +148,6 @@ public class Image extends BaseMagick implements MagickEntity {
 
     private static native long adaptiveResizeImage(long handler, int columns, int rows);
 
-    /**
-     * @param handler
-     * @param orientation OrientationType
-     * @return
-     */
-    private static native long autoOrientImage(long handler, int orientation);
 
     private static native long blurImage(long handler, double radius, double sigma);
 
@@ -202,10 +202,23 @@ public class Image extends BaseMagick implements MagickEntity {
         return image;
     }
 
+    /**
+     * 基于文件构建图片对象
+     *
+     * @param fileName
+     * @return
+     */
     public static Image factory(String fileName) {
         return factory(fileName,false);
     }
 
+    /**
+     * 基于文件构建图片对象
+     *
+     * @param fileName
+     * @param ping  true, 仅仅读取基础原数据信息，资源消耗少， false，读取图片所有数据
+     * @return
+     */
     public static Image factory(String fileName, boolean ping) {
         long imageHandler = 0;
         if (ping) {
@@ -322,6 +335,12 @@ public class Image extends BaseMagick implements MagickEntity {
         drawImage(handler, drawInfo.getHandler());
     }
 
+    /**
+     * 按照通道分离图片
+     *
+     * @param channelType  ChannelType
+     * @return
+     */
     public Image separateImage(int channelType) {
         if (handler == 0) {
             return null;
@@ -333,6 +352,13 @@ public class Image extends BaseMagick implements MagickEntity {
         return Image.factory(imageHandler);
     }
 
+    /**
+     * 锐化
+     *
+     * @param x
+     * @param y
+     * @return
+     */
     public Image shearImage(double x, double y) {
         if (handler == 0) {
             return null;
@@ -388,16 +414,6 @@ public class Image extends BaseMagick implements MagickEntity {
         return Image.factory(imageHandler);
     }
 
-    public Image autoOrientImage(int orientation) {
-        if (handler == 0) {
-            return null;
-        }
-        long imageHandler = autoOrientImage(handler, orientation);
-        if (imageHandler == 0) {
-            return null;
-        }
-        return Image.factory(imageHandler);
-    }
 
     public Image blurImage(double radius, double sigma) {
         if (handler == 0) {

@@ -127,4 +127,16 @@ public class ImageTestCase {
                 "/Users/hexiufeng/data/gif/smart-clever23.gif", 200, 100);
         System.out.println(ret);
     }
+
+    @Test
+    public void separateImageTest(){
+        Image image = Image.factory("/Users/hexiufeng/data/gif/1-2-free-png-image.png");
+
+        Image to = image.separateImage(ChannelType.GreenChannel);
+
+        to.writeImage("/Users/hexiufeng/data/gif/1-2-free-png-image-k.png");
+        to.destroy();
+        image.destroy();
+
+    }
 }

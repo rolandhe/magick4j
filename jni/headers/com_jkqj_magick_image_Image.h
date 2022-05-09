@@ -334,13 +334,6 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_deskewImage
 JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_adaptiveResizeImage
   (JNIEnv *, jclass, jlong, jint, jint);
 
-/*
- * Class:     com_jkqj_magick_image_Image
- * Method:    autoOrientImage
- * Signature: (JI)J
- */
-JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_autoOrientImage
-  (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     com_jkqj_magick_image_Image
