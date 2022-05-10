@@ -1,6 +1,11 @@
 #include "headers/com_jkqj_magick_image_ImageInfo.h"
 
-JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageInfo_initHandler
+/*
+ * Class:     com_jkqj_magick_image_ImageInfo
+ * Method:    init
+ * Signature: ()J
+ */
+JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageInfo_init
   (JNIEnv *env , jclass jclazz)
 {
    return (jlong)CloneImageInfo(NULL);

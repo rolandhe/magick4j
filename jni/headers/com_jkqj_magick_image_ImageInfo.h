@@ -10,10 +10,10 @@ extern "C" {
 #endif
 /*
  * Class:     com_jkqj_magick_image_ImageInfo
- * Method:    initHandler
+ * Method:    init
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageInfo_initHandler
+JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_ImageInfo_init
   (JNIEnv *, jclass);
 
 /*

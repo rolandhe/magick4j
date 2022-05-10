@@ -129,7 +129,19 @@ public class ImageTestCase {
     }
 
     @Test
-    public void separateImageTest(){
+    public void testPingGif() {
+
+        Image image = Image.factory("/Users/hexiufeng/data/gif/smart-clever.gif", true);
+
+        String fmt = image.getFormat();
+        System.out.println(fmt);
+        image.destroy();
+//       image.get
+//        System.out.println(ret);
+    }
+
+    @Test
+    public void separateImageTest() {
         Image image = Image.factory("/Users/hexiufeng/data/gif/1-2-free-png-image.png");
 
         Image to = image.separateImage(ChannelType.GreenChannel);
@@ -141,13 +153,13 @@ public class ImageTestCase {
     }
 
     @Test
-    public void cropImageTest(){
+    public void cropImageTest() {
         Image image = Image.factory("/Users/hexiufeng/data/gif/1-2-free-png-image.png");
 
         int w = image.getColumns();
         int h = image.getRows();
 
-        Image to = ImageTransform.cropImage(image,0,0,w/2,h);
+        Image to = ImageTransform.cropImage(image, 0, 0, w / 2, h);
 
         to.writeImage("/Users/hexiufeng/data/gif/1-2-free-png-image-l.png");
         to.destroy();

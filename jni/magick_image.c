@@ -951,6 +951,25 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setMagick
 
 }
 
+/*
+ * Class:     com_jkqj_magick_image_Image
+ * Method:    getMagick
+ * Signature: (J)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_jkqj_magick_image_Image_getMagick
+  (JNIEnv *env, jclass jclazz, jlong handler)
+{
+    Image * image;
+    image = (Image*)handler;
+
+    if(image == NULL)
+    {
+        return NULL;
+    }
+
+    return toJstring(env,image->magick);
+}
+
 
 /*
  * Class:     com_jkqj_magick_image_Image

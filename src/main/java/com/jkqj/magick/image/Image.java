@@ -8,7 +8,6 @@ import com.jkqj.magick.draw.DrawInfo;
  * 图片核心处理类
  *
  * @author hexiufeng
- *
  */
 public class Image extends BaseMagick implements MagickEntity {
     private long handler;
@@ -128,6 +127,8 @@ public class Image extends BaseMagick implements MagickEntity {
 
     private static native void setMagick(long handler, String fmt);
 
+    private static native String getMagick(long handler);
+
     /**
      * 暂时不用
      *
@@ -177,6 +178,7 @@ public class Image extends BaseMagick implements MagickEntity {
 
     private static native long edgeImage(long handler, double radius);
 
+
     private Image() {
 
     }
@@ -209,14 +211,14 @@ public class Image extends BaseMagick implements MagickEntity {
      * @return
      */
     public static Image factory(String fileName) {
-        return factory(fileName,false);
+        return factory(fileName, false);
     }
 
     /**
      * 基于文件构建图片对象
      *
      * @param fileName
-     * @param ping  true, 仅仅读取基础原数据信息，资源消耗少， false，读取图片所有数据
+     * @param ping     true, 仅仅读取基础原数据信息，资源消耗少， false，读取图片所有数据
      * @return
      */
     public static Image factory(String fileName, boolean ping) {
@@ -289,7 +291,6 @@ public class Image extends BaseMagick implements MagickEntity {
     }
 
     /**
-     *
      * @param srcImage
      * @param compositeOp {@link CompositeOperator}
      * @param clipToSelf
@@ -305,7 +306,6 @@ public class Image extends BaseMagick implements MagickEntity {
     }
 
     /**
-     *
      * @param srcImage
      * @param compositeOp {@link CompositeOperator}
      * @param x
@@ -355,7 +355,7 @@ public class Image extends BaseMagick implements MagickEntity {
     /**
      * 按照通道分离图片
      *
-     * @param channelType  ChannelType
+     * @param channelType ChannelType
      * @return
      */
     public Image separateImage(int channelType) {
@@ -571,7 +571,6 @@ public class Image extends BaseMagick implements MagickEntity {
 
 
     /**
-     *
      * @param pixelMask {@link PixelMask}
      * @param maskImage
      */
@@ -583,7 +582,6 @@ public class Image extends BaseMagick implements MagickEntity {
     }
 
     /**
-     *
      * @param pixelMask {@link PixelMask}
      * @return
      */
@@ -691,6 +689,10 @@ public class Image extends BaseMagick implements MagickEntity {
 
     public void setFileFmt(String fmt) {
         setMagick(handler, fmt);
+    }
+
+    public String getFormat() {
+        return getMagick(handler);
     }
 
     public void setFileName(String fileName) {
