@@ -99,6 +99,10 @@ public class Image extends BaseMagick implements MagickEntity {
 
     private static native void setRows(long handler, int rows);
 
+    private static native void setColors(long handler, int colors);
+
+    private static native void setDepth(long handler, int depth);
+
     private static native void setDelay(long handler, int delay);
 
     /**
@@ -660,6 +664,14 @@ public class Image extends BaseMagick implements MagickEntity {
 
     public void setRows(int rows) {
         setRows(handler, rows);
+    }
+
+    public void setColors(int colors) {
+        setColors(handler, colors);
+    }
+
+    public void setDepth(int depth) {
+        setDepth(handler, depth);
     }
 
 

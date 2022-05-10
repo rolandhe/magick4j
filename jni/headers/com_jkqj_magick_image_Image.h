@@ -205,6 +205,22 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setRows
 
 /*
  * Class:     com_jkqj_magick_image_Image
+ * Method:    setColors
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setColors
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_jkqj_magick_image_Image
+ * Method:    setDepth
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setDepth
+  (JNIEnv *, jclass, jlong, jint);
+
+/*
+ * Class:     com_jkqj_magick_image_Image
  * Method:    setDelay
  * Signature: (JI)V
  */

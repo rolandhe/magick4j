@@ -717,6 +717,44 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setRows
 
 /*
  * Class:     com_jkqj_magick_image_Image
+ * Method:    setColors
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setColors
+ (JNIEnv *env, jclass jclazz, jlong handler, jint colors)
+{
+    Image * image;
+    image = (Image*)handler;
+
+    if(image == NULL)
+    {
+        return;
+    }
+
+     image->colors = colors;
+}
+
+/*
+ * Class:     com_jkqj_magick_image_Image
+ * Method:    setDepth
+ * Signature: (JI)V
+ */
+JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setDepth
+ (JNIEnv *env, jclass jclazz, jlong handler, jint depth)
+ {
+     Image * image;
+    image = (Image*)handler;
+
+    if(image == NULL)
+    {
+        return;
+    }
+
+     image->depth = depth;
+ }
+
+/*
+ * Class:     com_jkqj_magick_image_Image
  * Method:    setDelay
  * Signature: (JI)V
  */
