@@ -12,6 +12,8 @@ find_package(JNI)
 
 add_library(Magick4J SHARED ${DIR_SRCS})
 
+install(TARGETS Magick4J DESTINATION lib)
+
 if(ImageMagick_FOUND)
     message(NOTICE "** Found ${ImageMagick_INCLUDE_DIRS}")
     # include_directories(${ImageMagick_INCLUDE_DIRS})

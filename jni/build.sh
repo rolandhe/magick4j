@@ -12,8 +12,8 @@ make
 
 if [ $OS_NAME = "Darwin" ];then
   # Mac OS X 操作系统
-  echo "please run: sudo cp build/libMagick4J.dylib /usr/local/lib"
-  sudo cp libMagick4J.dylib /usr/local/lib/
+  echo "mac os, and will install"
+  sudo make install
 else
   # GNU/Linux操作系统
   echo "linux, and will install"
