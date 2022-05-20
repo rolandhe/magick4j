@@ -20,6 +20,6 @@ jstring toJstring(JNIEnv * env, const char * buff);
 
 char * allocAndacceptJString(JNIEnv * env, jstring value);
 
-char * newCharBuff(size_t len);
+// char * newCharBuff(size_t len);
    
 #endif

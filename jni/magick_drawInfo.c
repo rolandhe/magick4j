@@ -141,7 +141,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
         return;
     }
 
-    char * maxText = newCharBuff(20 * 4096);
+    char maxText[10 * 1024] = {0};
 
     sprintf(maxText,"text %.20g %.20g '%s'", x,y, escapedText);
     DestroyString(escapedText);
@@ -151,9 +151,9 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
         RelinquishMagickMemory(drawInfo->primitive);
     }
     
-    drawInfo->primitive = newCharBuff(strlen(maxText));
-    strcpy(drawInfo->primitive, maxText);
-    RelinquishMagickMemory(maxText);
+    // drawInfo->primitive = newCharBuff(strlen(maxText));
+    // strcpy(drawInfo->primitive, maxText);
+    drawInfo = AcquireString(maxText);
 }
 
 
