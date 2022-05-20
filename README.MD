@@ -1,6 +1,12 @@
 # 说明
 Magick4J是对ImageMagick 7.0 的JNI封装库，封装了ImageMagick大部分的接口。
 
+# 注意,crash解决
+
+在linux下，ImageMagick与java JIT 有冲突，需要配置java 命令行参数来避免进程crash，直接关掉JIT, 使用 -Xint 命令行选项：  
+```
+java -Xint -jar xxx.jar
+```
 #安装
 ## 依赖
 1. 安装jdk 11
