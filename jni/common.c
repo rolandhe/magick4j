@@ -66,10 +66,10 @@ jstring toJstring(JNIEnv * env, const char * buff)
      return (*env)->NewStringUTF(env, buff);
  }
 
- char * newCharBuff(size_t len)
- {
-   return (char*)AcquireMagickMemory(len  + 1);
- }
+//  char * newCharBuff(size_t len)
+//  {
+//    return (char*)AcquireMagickMemory(len  + 1);
+//  }
 
  char * allocAndacceptJString(JNIEnv * env, jstring value)
  {
