@@ -30,7 +30,10 @@ void logInfo(JNIEnv * env,const char * src, const char * message)
 void logException(JNIEnv * env, const char * src,ExceptionInfo *exception)
 {
     jclass logClazz = (*env)->FindClass(env,"com/jkqj/magick/log/MagickLog");
-
+    if(logClazz == NULL)
+    {
+        return;
+    }
     jmethodID methodId =  (*env)->GetStaticMethodID(env,logClazz,"logMagickException","(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
     if(methodId == NULL)
     {

@@ -287,11 +287,13 @@ JNIEXPORT jstring JNICALL Java_com_jkqj_magick_image_Image_getImageProperty
     ExceptionInfo *exception;
     exception=AcquireExceptionInfo();
 
-
     const char * prop = GetImageProperty(image,key,exception);
     if(prop == NULL)
     {
-        logException(env,"Java_com_jkqj_magick_image_Image_getImageProperty",exception);
+        if(exception->error_number)
+        {
+            logException(env,"Java_com_jkqj_magick_image_Image_getImageProperty",exception);
+        }
         DestroyExceptionInfo(exception);
         return NULL;
     }
