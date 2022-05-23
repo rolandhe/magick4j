@@ -19,7 +19,5 @@ void acceptJString(JNIEnv * env, jstring value, char * buff, size_t maxLen);
 jstring toJstring(JNIEnv * env, const char * buff);
 
 char * allocAndacceptJString(JNIEnv * env, jstring value);
-
-// char * newCharBuff(size_t len);
    
 #endif
