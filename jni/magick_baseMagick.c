@@ -8,7 +8,7 @@
  */
 JNIEXPORT void JNICALL Java_com_jkqj_magick_BaseMagick_init(JNIEnv *env, jclass jclazz)
 {
-    MagickCoreGenesis("magick4j", MagickTrue);
+    MagickCoreGenesis(NULL, MagickFalse);
 }
 
 /*
