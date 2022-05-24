@@ -169,7 +169,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setFill
     }
 
     char color[128];
-    acceptJString(env, colorStr, color, 128);
+    acceptJString(env, colorStr, color);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
@@ -199,7 +199,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setStroke
     }
 
     char color[128];
-    acceptJString(env, colorStr, color, 127);
+    acceptJString(env, colorStr, color);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
