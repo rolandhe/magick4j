@@ -31,11 +31,10 @@ MagickBooleanType scaleCore(JNIEnv * env, const char * srcFileName, const char *
 
 Image * readGifFile(JNIEnv * env,const char * filename)
 {
-    ImageInfo * imageInfo = AcquireMagickMemory(sizeof(ImageInfo));
+    ImageInfo * imageInfo = CloneImageInfo(NULL);
     if(imageInfo == NULL){
         return NULL;
     }
-    GetImageInfo(imageInfo);
     CopyMagickString(imageInfo->filename, filename,strlen(filename) + 1);
     
     ExceptionInfo *exception;

@@ -12,8 +12,8 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_GifSupport_scale
     char srcFileName[MaxTextExtent];
     char toFileName[MaxTextExtent];
 
-    acceptJString(env,fromFile,srcFileName,MaxTextExtent - 1);
-    acceptJString(env,toFile,toFileName,MaxTextExtent - 1);
+    acceptJString(env,fromFile,srcFileName);
+    acceptJString(env,toFile,toFileName);
 
 #ifdef _USING_TRACE_MODE_
     logInfo(env,"Java_com_jkqj_magick_support_GifSupport_scale", toFileName);
@@ -38,8 +38,8 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_GifSupport_thumbnail
     char srcFileName[MaxTextExtent];
     char toFileName[MaxTextExtent];
 
-    acceptJString(env,fromFile,srcFileName,MaxTextExtent - 1);
-    acceptJString(env,toFile,toFileName,MaxTextExtent - 1);
+    acceptJString(env,fromFile,srcFileName);
+    acceptJString(env,toFile,toFileName);
 
 #ifdef _USING_TRACE_MODE_
     logInfo(env,"Java_com_jkqj_magick_support_GifSupport_thumbnail", toFileName);

@@ -56,10 +56,10 @@ void logException(JNIEnv * env, const char * src,ExceptionInfo *exception)
     (*env)->DeleteLocalRef(env, from);
 }
 
-void acceptJString(JNIEnv * env, jstring value, char * buff, size_t maxLen)
+void acceptJString(JNIEnv * env, jstring value, char * buff)
 {
      const char * cstr =  (*env)->GetStringUTFChars(env,value,NULL);
-     CopyMagickString(buff,cstr,maxLen);
+     CopyMagickString(buff,cstr,strlen(cstr) + 1);
      (*env)->ReleaseStringUTFChars(env,value,cstr);
 } 
 

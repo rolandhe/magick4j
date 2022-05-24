@@ -71,7 +71,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_ImageInfo_setMagick
       {
         return;
       }
-      acceptJString(env,fmt,info->magick,MagickPathExtent - 1);
+      acceptJString(env,fmt,info->magick);
 }
 
 /*
@@ -87,5 +87,5 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_ImageInfo_setFileName
       {
         return;
       }
-      acceptJString(env, fileName, info->filename, MagickPathExtent - 1);
+      acceptJString(env, fileName, info->filename);
 }

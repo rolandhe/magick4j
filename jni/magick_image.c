@@ -281,7 +281,7 @@ JNIEXPORT jstring JNICALL Java_com_jkqj_magick_image_Image_getImageProperty
         return NULL;
     }
 
-    acceptJString(env, propName,key,DEFAULT_MAX_LEN - 1);
+    acceptJString(env, propName,key);
 
 
     ExceptionInfo *exception;
@@ -348,8 +348,8 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_setImageProperty
         return JNI_FALSE;
     }
 
-    acceptJString(env, propName,key,DEFAULT_MAX_LEN - 1);
-    acceptJString(env, propValue,value,DEFAULT_MAX_LEN - 1);
+    acceptJString(env, propName,key);
+    acceptJString(env, propValue,value);
 
 
 
@@ -386,7 +386,7 @@ JNIEXPORT jstring JNICALL Java_com_jkqj_magick_image_Image_removeImageProperty
         return JNI_FALSE;
     }
 
-    acceptJString(env, propName,key,DEFAULT_MAX_LEN - 1);
+    acceptJString(env, propName,key);
 
     char * old = RemoveImageProperty(image,key);
 
@@ -411,7 +411,7 @@ JNIEXPORT jlong JNICALL Java_com_jkqj_magick_image_Image_readImage
     {
         return NULL;
     }
-    acceptJString(env, path, imageInfo->filename, MagickPathExtent - 1);
+    acceptJString(env, path, imageInfo->filename);
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
     Image * image = ReadImage(imageInfo,exception);
@@ -449,7 +449,7 @@ JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_image_Image_writeImage
 
     
 
-    acceptJString(env,toFile,image->filename,MagickPathExtent - 1);
+    acceptJString(env,toFile,image->filename);
 
 #ifdef _USING_TRACE_MODE_
     logInfo(env,"Java_com_jkqj_magick_image_Image_writeImage", image->filename);
@@ -895,7 +895,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setBackgroundColorString
         return;
     }
     char color[128];
-    acceptJString(env, colorStr, color, 127);
+    acceptJString(env, colorStr, color);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
@@ -924,7 +924,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setBorderColorString
         return;
     }
     char color[128];
-    acceptJString(env, colorStr, color, 127);
+    acceptJString(env, colorStr, color);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
@@ -986,7 +986,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setMagick
         return;
     }
 
-    acceptJString(env, magick, image->magick, MagickPathExtent - 1);
+    acceptJString(env, magick, image->magick);
 
 
 }
@@ -1027,7 +1027,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_image_Image_setFileName
         return;
     }
 
-    acceptJString(env, fileName, image->filename, MagickPathExtent - 1);
+    acceptJString(env, fileName, image->filename);
 
 }
 

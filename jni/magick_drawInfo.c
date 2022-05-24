@@ -150,9 +150,6 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
     {
         RelinquishMagickMemory(drawInfo->primitive);
     }
-    
-    // drawInfo->primitive = newCharBuff(strlen(maxText));
-    // strcpy(drawInfo->primitive, maxText);
     drawInfo = AcquireString(maxText);
 }
 
@@ -172,7 +169,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setFill
     }
 
     char color[128];
-    acceptJString(env, colorStr, color, 127);
+    acceptJString(env, colorStr, color, 128);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();

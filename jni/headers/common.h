@@ -14,7 +14,7 @@
 void logInfo(JNIEnv * env,const char * src, const char * message);
 void logException(JNIEnv * env, const char * src,ExceptionInfo *exception);
 
-void acceptJString(JNIEnv * env, jstring value, char * buff, size_t maxLen);
+void acceptJString(JNIEnv * env, jstring value, char * buff);
 
 jstring toJstring(JNIEnv * env, const char * buff);
 

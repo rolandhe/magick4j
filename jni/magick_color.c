@@ -9,7 +9,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_jkqj_magick_draw_Color_getColorInfo
   (JNIEnv *env, jclass jclazz, jstring colorName)
 { 
     char name[128];
-    acceptJString(env,colorName,name,127);
+    acceptJString(env,colorName,name);
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
     ColorInfo * colorInfo = GetColorInfo(name,exception);
