@@ -1,5 +1,17 @@
 #include "headers/common.h"
+#include <sys/time.h>
 
+void start_watcher(Watcher * watcher){
+    gettimeofday(&watcher->start,NULL);
+}
+void end_watcher(Watcher * watcher){
+    gettimeofday(&watcher->end,NULL);
+}
+
+long long get_cost_time(Watcher * watcher){
+    return (watcher->end.tv_sec * 1000 + watcher->end.tv_usec/1000)
+        - (watcher->start.tv_sec * 1000 + watcher->start.tv_usec/1000);
+}
 
 void logInfo(JNIEnv * env,const char * src, const char * message)
 {
@@ -25,6 +37,24 @@ void logInfo(JNIEnv * env,const char * src, const char * message)
     }
     
     (*env)->DeleteLocalRef(env, from);
+}
+
+void logInfoWithCost(JNIEnv * env,const char *src, const char *message,Watcher * watcher){
+    size_t len = 128;
+    if(message){
+        len += strlen(message) + 1;
+    }
+    char * new_messsage = AcquireMagickMemory(len);
+    if(message){
+        sprintf(new_messsage,"%s, cost %ld ms",message,get_cost_time(watcher));
+    } else {
+        sprintf(new_messsage,"cost %ld ms", get_cost_time(watcher));
+    }
+
+    logInfo(env,src,new_messsage);
+    if(new_messsage){
+        RelinquishMagickMemory(new_messsage);
+    }
 }
 
 void logException(JNIEnv * env, const char * src,ExceptionInfo *exception)

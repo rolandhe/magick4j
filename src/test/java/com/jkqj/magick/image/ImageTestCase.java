@@ -3,6 +3,7 @@ package com.jkqj.magick.image;
 import com.jkqj.magick.draw.DrawInfo;
 import com.jkqj.magick.draw.PrimitiveSupport;
 import com.jkqj.magick.support.GifSupport;
+import com.jkqj.magick.support.PdfSupport;
 import org.junit.Test;
 
 public class ImageTestCase {
@@ -164,5 +165,18 @@ public class ImageTestCase {
         to.writeImage("/Users/hexiufeng/data/gif/1-2-free-png-image-l.png");
         to.destroy();
         image.destroy();
+    }
+
+    @Test
+    public void convertPdfToPngTest(){
+        String pdf = "/Users/hexiufeng/img/pdf-img/t.pdf";
+        String png = "/Users/hexiufeng/img/pdf-img/tg.png";
+        int  ret =  PdfSupport.convertPdfToPng(pdf,png,null,false);
+        if(ret == PdfSupport.CONVERT_ERROR) {
+            System.out.println(ret);
+        }
+
+        System.out.println(ret);
+        System.out.println(PdfSupport.getResultFileNameList(ret,png));
     }
 }

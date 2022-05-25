@@ -5,90 +5,108 @@
 
 #define PNG_EXT ".png"
 #define DEFAULT_DENSITY "300"
-#define MAX_NUM_WIDTH  21
+#define CONVERT_ERROR  -1
+
+
 
 MagickBooleanType is_png(const char *out_file);
 
+void setup_image_info(const char *density, ImageInfo *image_info);
 
-Image *read_src_file(JNIEnv* env,const char *in_file, const char *density);
-
-void remove_icc(JNIEnv *env,Image *src_img);
-
-Image *read_multi_images(JNIEnv* env,const char *file_name_patter, int size, ImageInfo *image_info);
-
-void remove_temp_files(JNIEnv *env,const char *file_name_patter, int size);
+MagickBooleanType  apple_image_info_to_image(JNIEnv *env,Image * src_img, ImageInfo * image_info, ExceptionInfo * exception);
 
 
-
-MagickBooleanType convert_to_png(JNIEnv* env,const char *in_file, const char *out_file, const char *density, int remove_temp) {
+size_t convert_to_png(JNIEnv* env,const char *in_file, const char *out_file, const char *density, int out_single) {
     if (!is_png(out_file)) {
         logInfo(env,"convert_to_png.out_file error", out_file);
-        return MagickFalse;
-    }
-    Image *src_img = read_src_file(env,in_file, density);
-    if (!src_img) {
-        return MagickFalse;
+        return CONVERT_ERROR;
     }
 
-    remove_icc(env,src_img);
-
-    int size = GetImageListLength(src_img);
-
+    
     ImageInfo *image_info = CloneImageInfo(NULL);
-
     if (!image_info) {
-        DestroyImageList(src_img);
-        return MagickFalse;
+        logInfo(env,"convert_to_png.create image_info error", "call CloneImageInfo error");
+        return CONVERT_ERROR;
     }
-
-    image_info->colorspace = sRGBColorspace;
-    image_info->type = TrueColorType;
+    setup_image_info(density, image_info);
 
     ExceptionInfo *exception;
     exception = AcquireExceptionInfo();
 
-    MagickBooleanType ret = WriteImages(image_info, src_img, out_file, exception);
-    if (!ret) {
-        logException(env,"convert_to_png.WriteImages", exception);
-        DestroyImageInfo(image_info);
+    Watcher watcher;
+#ifdef _USING_TRACE_MODE_
+    start_watcher(&watcher);
+#endif
+    Image *src_img = ReadImages(image_info,in_file,exception);
+
+    if (!src_img) {
+        logException(env,"convert_to_png.ReadImages", exception);
         DestroyExceptionInfo(exception);
+        DestroyImageInfo(image_info);
+        return CONVERT_ERROR;
+    }
+#ifdef _USING_TRACE_MODE_
+    end_watcher(&watcher);
+    logInfoWithCost(env,"convert_to_png.ReadImages",NULL,&watcher);
+#endif
+    MagickBooleanType ret = apple_image_info_to_image(env,src_img, image_info, exception);
+    if(!ret){
         DestroyImageList(src_img);
-        return MagickFalse;
+        DestroyExceptionInfo(exception);
+        DestroyImageInfo(image_info);
+        return CONVERT_ERROR;
     }
 
-    if (size == 1) {
-        DestroyImageInfo(image_info);
-        DestroyExceptionInfo(exception);
+    size_t size = GetImageListLength(src_img);
+    if (size == 1 || !out_single) {
+#ifdef _USING_TRACE_MODE_
+        start_watcher(&watcher);
+#endif
+        ret = WriteImages(image_info, src_img, out_file, exception);
+#ifdef _USING_TRACE_MODE_
+        end_watcher(&watcher);
+        logInfoWithCost(env,"convert_to_png.WriteImages","write one page or single page",&watcher);
+#endif      
+        
         DestroyImageList(src_img);
-        return MagickTrue;
-    }
-
-    Image *multi_images = read_multi_images(env,out_file, size, image_info);
-    if (!multi_images) {
-        DestroyImageInfo(image_info);
         DestroyExceptionInfo(exception);
-        DestroyImageList(src_img);
-        remove_temp_files(env,out_file, size);
-        return MagickTrue;
+        DestroyImageInfo(image_info);
+        if (!ret) {
+            logException(env,"convert_to_png.WriteImages", exception);
+            return CONVERT_ERROR;
+        }
+        return size;
     }
-
-    Image *composite_image = AppendImages(multi_images, MagickTrue, exception);
+#ifdef _USING_TRACE_MODE_
+    start_watcher(&watcher);
+#endif
+    Image *composite_image = AppendImages(src_img, MagickTrue, exception);
+#ifdef _USING_TRACE_MODE_
+    end_watcher(&watcher);
+    logInfoWithCost(env,"convert_to_png.AppendImages",NULL, &watcher);
+#endif
     CopyMagickString(composite_image->filename, out_file, strlen(out_file) + 1);
-    ret = WriteImage(image_info, composite_image, exception);
 
-    if (!ret) {
-        logException(env,"convert_to_png.WriteImage", exception);
-    }
+#ifdef _USING_TRACE_MODE_
+    start_watcher(&watcher);
+#endif   
+    ret = WriteImage(image_info, composite_image, exception);
+#ifdef _USING_TRACE_MODE_
+    end_watcher(&watcher);
+    logInfoWithCost(env,"convert_to_png.WriteImage","to single file", &watcher);
+#endif
+
+   
 
     DestroyImage(composite_image);
-    DestroyImageList(multi_images);
     DestroyExceptionInfo(exception);
     DestroyImageInfo(image_info);
     DestroyImageList(src_img);
-    if (remove_temp) {
-        remove_temp_files(env,out_file, size);
+     if (!ret) {
+        logException(env,"convert_to_png.WriteImage", exception);
+        return CONVERT_ERROR;
     }
-    return ret;
+    return 1;
 }
 
 MagickBooleanType is_png(const char *out_file) {
@@ -109,80 +127,36 @@ MagickBooleanType is_png(const char *out_file) {
     return MagickFalse;
 }
 
-void remove_icc(JNIEnv * env,Image *src_img) {
-    StringInfo *removed_profile = RemoveImageProfile(src_img, "icc");
-    if (removed_profile) {
-        logInfo(env,"rm icc", "icc");
-    } else {
-        logInfo(env,"rm icc", "current img has not icc");
-    }
-}
-
-Image *read_src_file(JNIEnv * env,const char *in_file, const char *density) {
-    ImageInfo *image_info = CloneImageInfo(NULL);
-    if (image_info == NULL) {
-        return NULL;
-    }
-    CopyMagickString(image_info->filename, in_file, strlen(in_file) + 1);
-    image_info->density = AcquireString(density == NULL ? DEFAULT_DENSITY : density);
+void setup_image_info(const char *density, ImageInfo *image_info) {
     image_info->colorspace = sRGBColorspace;
+    SetImageOption(image_info,"colorspace","srgb");
     image_info->type = TrueColorType;
+    SetImageOption(image_info,"type","truecolor");
 
-    ExceptionInfo *exception;
-    exception = AcquireExceptionInfo();
-    Image *image = ReadImage(image_info, exception);
-    if (!image) {
-        logException(env,"gif_support.scaleCore.readGifFile", exception);
-        DestroyExceptionInfo(exception);
-        DestroyImageInfo(image_info);
-        return NULL;
-    }
-
-    DestroyExceptionInfo(exception);
-    DestroyImageInfo(image_info);
-    return GetFirstImageInList(image);
+    image_info->density = AcquireString(density == NULL ? DEFAULT_DENSITY : density);
+    SetImageOption(image_info,"density",image_info->density);
 }
 
-Image *read_multi_images(JNIEnv* env,const char *file_name_patter, int size, ImageInfo *image_info) {
-    size_t prefix_len = strlen(file_name_patter) - strlen(PNG_EXT);
-    char * prefix_name = AcquireMagickMemory(prefix_len + 1);
-    CopyMagickString(prefix_name,file_name_patter,prefix_len + 1);
-
-
-    Image *image_list = NewImageList();
-
-    ExceptionInfo *exception = AcquireExceptionInfo();
-
-    for (int i = 0; i < size; i++) {
-        sprintf(image_info->filename, "%s-%d%s", prefix_name, i, PNG_EXT);
-        Image *read_img = ReadImage(image_info, exception);
-        if (!read_img) {
-            logException(env,"read_multi_images", exception);
-            DestroyExceptionInfo(exception);
-            DestroyImageList(image_list);
-            RelinquishMagickMemory(prefix_name);
-            return NULL;
+MagickBooleanType  apple_image_info_to_image(JNIEnv *env,Image * src_img, ImageInfo * image_info, ExceptionInfo * exception){
+    Image * p = GetFirstImageInList(src_img);
+    while (p){
+        MagickBooleanType ret=SyncImageSettings(image_info,p,exception);
+        if(!ret){
+            logException(env,"apple_image_info_to_image.SyncImageSettings", exception);
+            return ret;
         }
-        AppendImageToList(&image_list, read_img);
-    }
-
-    DestroyExceptionInfo(exception);
-    RelinquishMagickMemory(prefix_name);
-    return image_list;
-}
-
-void remove_temp_files(JNIEnv * env,const char *file_name_patter, int size) {
-    size_t cap_size = strlen(file_name_patter) + MAX_NUM_WIDTH;
-    char * file_name = AcquireMagickMemory(cap_size);
-    int prefix_len = strlen(file_name_patter) - strlen(PNG_EXT);
-
-    for (int i = 0; i < size; i++) {
-        CopyMagickString(file_name,file_name_patter,prefix_len + 1);
-        sprintf(file_name, "%s-%d%s", file_name, i, PNG_EXT);
-        MagickBooleanType ret = RelinquishUniqueFileResource(file_name);
-        if (!ret) {
-            logInfo(env,"remove_temp_files", file_name);
+        ret = TransformImageColorspace(p, image_info->colorspace,exception);
+        if(!ret){
+            logException(env,"apple_image_info_to_image.SyncImageSettings", exception);
+            return  ret;
         }
+        p->type = UndefinedType;
+        ret = SetImageType(p,image_info->type,exception);
+        if(!ret){
+            logException(env,"apple_image_info_to_image.SetImageType", exception);
+            return ret;
+        }
+        p = GetNextImageInList(p);
     }
-    RelinquishMagickMemory(file_name);
+    return MagickTrue;
 }

@@ -6,17 +6,17 @@
  * Method:    convertPdfToPng
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_PdfSupport_convertPdfToPng
-  (JNIEnv *env, jclass jclazz, jstring pdfFile, jstring pngFile, jstring jsDensity, jboolean rmTempFile)
+JNIEXPORT jint JNICALL Java_com_jkqj_magick_support_PdfSupport_convertPdfToPng
+  (JNIEnv *env, jclass jclazz, jstring pdfFile, jstring pngFile, jstring jsDensity, jboolean outSingleFile)
   {
         const char * in_file = allocAndacceptJString(env , pdfFile);
         const char * out_file = allocAndacceptJString(env , pngFile);
-        const char * density = NULL;
+        char * density = NULL;
         if(jsDensity){
             density = allocAndacceptJString(env, jsDensity);
         }
 
-        MagickBooleanType ret = convert_to_png(env,in_file,out_file,density,rmTempFile);
+        size_t ret = convert_to_png(env,in_file,out_file,density,outSingleFile);
 
         DestroyString(in_file);
         DestroyString(out_file);

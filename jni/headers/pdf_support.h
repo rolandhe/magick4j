@@ -14,6 +14,6 @@
 #ifndef PDF2IMG_PDF_SUPPORT_H
 #define PDF2IMG_PDF_SUPPORT_H
 
-MagickBooleanType convert_to_png(JNIEnv *env,const char * in_file,const char * out_file,const char* density,int remove_temp);
+size_t convert_to_png(JNIEnv *env,const char * in_file,const char * out_file,const char* density,int out_single);
 
 #endif //PDF2IMG_PDF_SUPPORT_H

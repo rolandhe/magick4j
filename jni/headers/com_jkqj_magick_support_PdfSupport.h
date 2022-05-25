@@ -13,7 +13,7 @@ extern "C" {
  * Method:    convertPdfToPng
  * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)Z
  */
-JNIEXPORT jboolean JNICALL Java_com_jkqj_magick_support_PdfSupport_convertPdfToPng
+JNIEXPORT jint JNICALL Java_com_jkqj_magick_support_PdfSupport_convertPdfToPng
   (JNIEnv *, jclass, jstring, jstring, jstring, jboolean);
 
 #ifdef __cplusplus
