@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setFont
         return;
     }
 
-    drawInfo->font = allocAndacceptJString(env, fontName);
+    drawInfo->font = allocAndAcceptJString(env, fontName);
 }
 
 
@@ -63,7 +63,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setText
         return;
     }
 
-    drawInfo->text = allocAndacceptJString(env, text);
+    drawInfo->text = allocAndAcceptJString(env, text);
 }
 
 /*
@@ -80,7 +80,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setMetrics
         return;
     }
 
-    drawInfo->metrics = allocAndacceptJString(env, metrics);
+    drawInfo->metrics = allocAndAcceptJString(env, metrics);
 }
 
 /*
@@ -97,7 +97,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setFamily
         return;
     }
 
-    drawInfo->family = allocAndacceptJString(env, family);
+    drawInfo->family = allocAndAcceptJString(env, family);
 }
 
 /*
@@ -131,7 +131,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
         return;
     }
     char* escapedText;
-    char * localText =  allocAndacceptJString(env, text);
+    char * localText =  allocAndAcceptJString(env, text);
 
     escapedText = EscapeString((const char *) localText,'\'');
 
@@ -150,7 +150,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_annotation
     {
         RelinquishMagickMemory(drawInfo->primitive);
     }
-    drawInfo = AcquireString(maxText);
+    drawInfo->primitive = AcquireString(maxText);
 }
 
 
@@ -227,7 +227,7 @@ JNIEXPORT void JNICALL Java_com_jkqj_magick_draw_DrawInfo_setPrimitive
         return;
     }
 
-    drawInfo->primitive = allocAndacceptJString(env, primitive);
+    drawInfo->primitive = allocAndAcceptJString(env, primitive);
 
 }
 

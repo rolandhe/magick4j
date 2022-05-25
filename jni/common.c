@@ -98,7 +98,7 @@ jstring toJstring(JNIEnv * env, const char * buff)
      return (*env)->NewStringUTF(env, buff);
  }
 
- char * allocAndacceptJString(JNIEnv * env, jstring value)
+ char * allocAndAcceptJString(JNIEnv * env, jstring value)
  {
      const char * cstr =  (*env)->GetStringUTFChars(env,value,NULL);
      char * buff = AcquireString(cstr);

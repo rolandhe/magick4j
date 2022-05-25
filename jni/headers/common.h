@@ -31,6 +31,6 @@ void acceptJString(JNIEnv * env, jstring value, char * buff);
 
 jstring toJstring(JNIEnv * env, const char * buff);
 
-char * allocAndacceptJString(JNIEnv * env, jstring value);
+char * allocAndAcceptJString(JNIEnv * env, jstring value);
    
 #endif
